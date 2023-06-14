@@ -29,12 +29,26 @@ async function run() {
   try {
  
     await client.connect();
-    // Send a ping to confirm a successful connection
+    const quizCategoryCollection = client.db('quizDB').collection('category')
+
+    // save quiz category in db
+    app.post('/add-category', async(req, res) => {
+      const categoryData = req.body;
+      const result = await quizCategoryCollection.insertOne(categoryData);
+      res.send(result)
+    })
+
+    // get quiz category from db
+    app.get('/quiz-category', async(req,res) => {
+      const result = await quizCategoryCollection.find().toArray();
+      res.send(result)
+    })
+    
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
   
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
