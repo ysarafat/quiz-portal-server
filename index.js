@@ -14,8 +14,8 @@ app.use(express.json());
 
 
 
-// const uri = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.8.2'
-const uri =  `mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.0`
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@4meprogramming.mp2bykf.mongodb.net/?retryWrites=true&w=majority`
+// const uri =  `mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.0`
 
 // mongodb
 const client = new MongoClient(uri, {
@@ -100,10 +100,10 @@ async function run() {
   
     
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log("successfully connected to MongoDB!");
   } finally {
   
-    // await client.close();
+  
   }
 }
 run().catch(console.dir);
