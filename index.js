@@ -42,6 +42,14 @@ async function run() {
       res.send(result)
     })
 
+    // get  user from db
+    app.get('/user', async(req, res) => {
+      const email = req.query.email;
+      const query = {email: email};
+      const result = await usersCollection.findOne(query);
+      res.send(result)
+    })
+
     // save quiz category in db
     app.post('/add-category', async(req, res) => {
       const categoryData = req.body;
@@ -75,6 +83,21 @@ async function run() {
       const result = await scoreCollection.insertOne(body)
       res.send(result);
     })
+
+    // get all quiz score  for leaderboard
+    app.get('/score', async(req, res) => {
+      const result = await scoreCollection.find().sort({score: -1}).toArray();
+      res.send(result);
+    })
+    
+    // get user score 
+    app.get('/my-score', async(req,res) => {
+      const email = req.query.email;
+      const query = {email: email}
+      const result = await scoreCollection.find(query).toArray();
+      res.send(result)
+    })
+  
     
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
